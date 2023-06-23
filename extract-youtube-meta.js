@@ -9,6 +9,6 @@ let result =
       node.querySelector('#channel-name').innerText,
     ]
   })
-  .map(([title, artist]) => `${artist}  ${title}`)
+  .map(([title, artist]) => `${title}  ${artist}`)
   .join('\n')
 console.log(result)
