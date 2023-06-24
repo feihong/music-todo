@@ -1,7 +1,7 @@
 sqlite3 = require 'lsqlite3'
 dbfile = 'database.sqlite3'
 
--- db = sqlite3.open(dbfile)
+db = sqlite3.open(dbfile)
 
 function split(s)
   for a, b in s:gmatch('(.+)  (.+)') do
@@ -12,8 +12,15 @@ end
 file = arg[1]
 print('Processing ' .. file)
 
-for line in io.lines(arg[1]) do
-  -- print(line)
+insertStmt = db:prepare[[
+  INSERT INTO tracks (title, artist) VALUES (?, ?)
+]]
+
+for line in io.lines(file) do
   local title, artist = split(line)
-  print(title, '||', artist)
+  insertStmt:reset()
+  insertStmt:bind_values(title, artist)
+  insertStmt:step()
 end
+
+db:close()

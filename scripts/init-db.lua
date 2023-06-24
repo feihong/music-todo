@@ -9,7 +9,8 @@ if not path.exists(dbfile) then
       title TEXT NOT NULL,
       artist TEXT NOT NULL,
       status TEXT,
-      collect INTEGER,
+      collected INTEGER,
+      language TEXT,
       lyrics TEXT,
       link TEXT,
       notes TEXT
