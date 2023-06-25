@@ -1,8 +1,10 @@
+-- Create database file (if it doesn't exit) and create the tracks table
+
 sqlite3 = require 'lsqlite3'
-dbfile = 'database.sqlite3'
+local dbfile = 'database.sqlite3'
 
 if not path.exists(dbfile) then
-  db = sqlite3.open(dbfile)
+  local db = sqlite3.open(dbfile)
   db:exec[[
     CREATE TABLE tracks (
       id INTEGER PRIMARY KEY,
@@ -16,4 +18,8 @@ if not path.exists(dbfile) then
       notes TEXT
     );
   ]]
+  db:close()
+  print('Generated ' .. dbfile)
+else
+  print(dbfile .. ' already exists')
 end

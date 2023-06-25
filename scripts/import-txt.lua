@@ -1,11 +1,13 @@
-sqlite3 = require 'lsqlite3'
-dbfile = 'database.sqlite3'
+-- Import tracks from .txt file
 
-db = sqlite3.open(dbfile)
+sqlite3 = require 'lsqlite3'
+local dbfile = 'database.sqlite3'
+
+local db = sqlite3.open(dbfile)
 
 function split(s)
-  for a, b in s:gmatch('(.+)  (.+)') do
-    return table.unpack({a, b})
+  for title, artist in s:gmatch('(.+)  (.+)') do
+    return title, artist
   end
 end
 
@@ -22,5 +24,9 @@ for line in io.lines(file) do
   insertStmt:bind_values(title, artist)
   insertStmt:step()
 end
+
+db:exec([[SELECT COUNT(*) FROM tracks]], function(udata, cols, values, names)
+  print('Inserted ' .. values[1] .. ' rows')
+end)
 
 db:close()
